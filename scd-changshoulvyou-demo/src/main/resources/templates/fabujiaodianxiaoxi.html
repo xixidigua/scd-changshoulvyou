@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <!--BT4的CSS-->
+    <link rel="styleSheet" href="bootstrap/css/bootstrap.css">
+    <!--导入自己的CSS库-->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <!--导入favicon图标-->
+    <link rel="icon" href="favicon.ico">
+    <!--引入KindEditor库-->
+    <link rel="stylesheet" href="KindEditor/themes/default/default.css"/>
+    <link rel="stylesheet" href="KindEditor/themes/simple/simple.css"/>
+</head>
+<body>
+<!-----------------------顶部topbar的begin--------------------------->
+<!--调用公共代码片段header-->
+<div th:replace="~{base::header}"></div>
+<!-----------------------顶部topbar的end----------------------------->
+
+
+<!------------------------左侧界面的begin------------------------------>
+<section class="yida-left-side " style="background-color:rgba(37,28,51,0.07)">
+    <div class="container-fluid h-100">
+        <div class=" row h-100 align-items-start">
+            <div th:replace="~{base::leftMenuBar(cname)}"></div>
+            <!------------------------左侧界面的end------------------------------>
+            <!------------------------右侧界面的begin------------------------------>
+            <div id="yida-main" class="col-10 ">
+                <form id="myform" enctype="multipart/form-data" method="post">
+                <div class="container bg-white " style="height:700px">
+                        <div class="row">
+                            <div class="col-12 mt-4 bg-light  font-weight-bold" style="height: 50px">
+                                <label class="user-06 mt-2">发布焦点信息</label>
+                            </div>
+                            <div class="bg-white col-12 ">
+                                <div class="mt-4 ml-2 mb-4"
+                                     style="height: 60px;background-color: rgba(37, 28, 51, 0.07)">
+                                    <label class="text-danger ml-5 mt-3">*</label>
+                                    <label class="mt-3" style="font-size: 16px">标题：</label>
+                                    <input id="input_message" class="mt-3 ml-2" type="text" name="title"
+                                           placeholder="请输入不超过15个汉字的标题"
+                                           style="height:30px; outline-color: rgba(15,12,135,0.51);width: 220px">
+                                </div>
+                            </div>
+
+
+                            <div class=" ml-1 bg-white col-12 row h-100 w-100 ">
+                                <div class="mt-4 ml-2 d-flex flex-column justify-content-center">
+                                    <label style="font-size: 16px"> <label
+                                            class="text-danger ml-5 ">*</label>内容：</label>
+                                </div>
+                                <textarea id="editor_id" class="textarea mt-3 ml-4" name="content"
+                                          style="width:700px;height:300px;"></textarea>
+                            </div>
+
+
+                            <div id="mydiv" class=" col-12 mt-3" style="background-color: rgba(37, 28, 51, 0.07)">
+                                <label class="text-danger h-75">*</label>
+                                <label style="font-size: 16px">上传缩略图：</label>
+                                <a id="uploadfile_a" onmouseenter="message()" onmouseleave="leave()"><input type="file"
+                                                                                                            id="myfile"><img
+                                        id="myimage" src="image/icon.jpg" style="width:60px;height:60px;"><span
+                                        class="iconfont icon-huishouzhan  d-flex flex-column align-items-center justify-content-center"
+                                        id="litimg_del_btn" onclick="deletePhoto()"></span></a><br>
+                                <label class="ml-5">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&emsp;
+                                    提示：单张图片不得超过1M</label>
+
+                            </div>
+                            <div class="row col-12 mt-3 ">
+                                <div class="col-1"></div>
+                                <div class="btn-group btn-group-sm">
+                                    <button id="submit_form_btn" type="button"
+                                            class="btn bg-success text-white text-center mt-3 ml-5 h-75"
+                                            style="width: 50px" onclick="submitMethod()">发布
+                                    </button>
+                                    <a id="comeback_message" class=" bg-success text-white mt-3 ml-3 h-75 "
+                                       th:href="@{/jiaodianxinxiliebiao}"
+                                       style="text-decoration: none;width:50px!important;display: block;text-align: center;line-height: 25px;">返回</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{base::footer01}"></div>
+    <div th:replace="~{base::footer02}"></div>
+
+
+</section>
+
+<!--以下bootstrap4的依赖js库，引入顺序不要错了哟!-->
+<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/fabujiaodianxiaoxi.js"></script>
+
+<!--引入KindEditor的js-->
+<script charset="utf-8" src="KindEditor/kindeditor-all.js"></script>
+<script charset="utf-8" src="KindEditor/lang/zh-CN.js"></script>
+</body>
+</html>
+<script>
+    //关闭过滤模式，保留所有标签
+    KindEditor.options.filterMode = false;
+    KindEditor.ready(function (K) {
+        window.editor = K.create('#editor_id', {
+            themeType: 'default', //定义主题风格，default，simple
+            /*items:[ //定义显示的菜单图标
+                'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+                'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                'anchor', 'link', 'unlink'
+            ],*/
+            items: [ //定义显示的菜单图标
+                'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'removeformat', '|', 'justifyleft',
+                'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', 'link', 'plainpaste', 'image'
+            ],
+            uploadJson: 'upload',
+            fileManagerJson: 'browser',
+            //指定后台接收的图片的名称
+            filePostName: 'aa',
+            cssPath: 'kindeditor/plugins/code/prettify.css', allowFileManager: true, resizeType: 0
+        /*   afterBlur:function () {
+        this.async();
+       }*/
+        });
+    });
+
+    function getContent() {
+        //方式一： 取得HTML内容
+        var html = editor.html();
+        console.log(html);
+
+        //方式二： 同步数据后可以直接取得textarea的value
+        //editor.sync();
+        //html = document.getElementById('editor_id').value; // 原生API
+        //console.log(html);
+    }
+
+    function setContent() {
+        // 设置HTML内容
+        editor.html('333HTML内容111222');
+    }
+</script>
+

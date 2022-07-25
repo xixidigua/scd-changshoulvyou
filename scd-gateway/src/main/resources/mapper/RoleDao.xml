@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdgateway.dao.RoleDao">
+
+    <resultMap type="com.yida.scdgateway.entity.Role" id="RoleMap">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <collection property="permissions" javaType="java.util.HashSet" ofType="com.yida.scdgateway.entity.Permission">
+           <id property="id" column="pid"></id>
+            <result property="name" column="pname"></result>
+            <result property="url" column="purl"></result>
+        </collection>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryByRoleId" resultMap="RoleMap">
+        select  r.*,p.id pid ,p.name pname,p.url purl from permission p
+        inner  join role_permission rp on p.id=rp.permission_id
+        inner  join role r on r.id=rp.role_id
+        where r.id=#{roleId}
+    </select>
+
+</mapper>
+

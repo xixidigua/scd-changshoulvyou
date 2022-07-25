@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录[[${port}]]</title>
+    <!--视图的窗口，即：视口。-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <!--BT4的CSS-->
+    <link rel="styleSheet" th:href="@{/bootstrap/css/bootstrap.css}">
+<!--导入自己的CSS库-->
+    <link rel="stylesheet" th:href="@{/css/login-user.css}">
+    <!--导入favicon图标-->
+    <link rel="icon" th:href="@{/favicon.ico}">
+
+</head>
+<body>
+<div id="userLogin" class="d-flex flex-column align-items-center justify-content-center " style="height:550px">
+    <span style="font-size: 20px;font-weight: bold">长寿旅游管理后台</span>
+    <div id="user-00" class="mt-2">
+        <form th:action="@{/loginData}" method="post" onsubmit="return checkUser()" class="d-flex flex-column align-items-center mt-3">
+            <div id="mytest" th:if="${loginError!=null}" th:text="${loginError}" class="text-danger" style="background-color: rgba(255,177,186,0.42);"></div>
+            <div class="form-group">
+                <label for="userId">用户名称：</label>
+                <input type="text" id="userId" name="name" class="form-control" style="width: 300px">
+            </div>
+            <div class="form-group">
+                <label for="pwdId">用户密码：</label>
+                <input type="password" id="pwdId" name="password" class="form-control" style="width: 300px">
+            </div>
+            <input  class="submit text-center"  value="登 录" type="submit" >
+        </form>
+
+    </div>
+</div>
+
+
+<!--先集成jQery.min.js,然后再集成popper.min.js,最后再集成bootstrap.min.js-->
+<script type="text/javascript" th:src="@{/bootstrap/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/check-user.js}"></script>
+<script type="text/javascript" th:src="@{/js/md5a.js}"></script>
+</body>
+</html>

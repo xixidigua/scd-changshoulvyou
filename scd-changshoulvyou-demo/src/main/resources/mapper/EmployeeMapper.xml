@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.EmployeeMapper">
+<!--增-->
+<insert id="add">
+    insert into t_employee (name,sex,age,dept_id,password) values (#{name},#{sex},#{age},#{dept.id},#{password})
+</insert>
+    <!--针对oracle增加，单独设计-->
+<insert id="add" databaseId="oracle">
+    insert  into
+    t_employee(id,name,sex,age,dept_id,password)
+     values
+    (t_employee_seq.nextval,#{name},#{sex},#{age},#{dept.id},#{password})
+</insert>
+<!--改-->
+    <update id="update">
+        update t_employee set  name =#{name},sex =#{sex},age =#{age},dept_id =#{dept.id},password =#{password} where id=#{id}
+    </update>
+
+    <resultMap id="base_map" type="com.yida.scdchangshoulvyoudemo.entity.Employee">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="sex" column="sex"></result>
+        <result property="age" column="age"></result>
+        <result property="password" column="password"></result>
+        <!--分布式查询-->
+        <association property="dept" select="com.yida.scdchangshoulvyoudemo.mapper.DeptMapper.read" column="dept_id"/>
+    </resultMap>
+<!--    读一个-->
+    <select id="readOne" resultMap="base_map">
+        select * from t_employee where id=#{id}
+    </select>
+    <!--读取所有-->
+    <select id="readAll" resultMap="base_map">
+        select * from t_employee
+    </select>
+
+    <!--按姓名模糊查询-->
+    <select id="readList" resultMap="base_map">
+        select *from t_employee
+        <where>
+            <if test="name!=null and name!=''">
+                name like #{name}
+            </if>
+        </where>
+    </select>
+</mapper>

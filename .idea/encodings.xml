@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/scd-changshoulvyou-demo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/scd-changshoulvyou-demo/src/main/resources/bootstrap.yml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/scd-gateway" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/scd-gateway/src/main/resources/bootstrap.yml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/scd-login" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/scd-login/src/main/resources/application.yml" charset="UTF-8" />
+  </component>
+</project>

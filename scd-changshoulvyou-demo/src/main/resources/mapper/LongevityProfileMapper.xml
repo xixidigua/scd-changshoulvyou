@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.LongevityProfileMapper">
+    <!--改-->
+     <update id="update">
+        update t_longevity_profile set name= #{name},file_Sourse=#{fileSourse},file_Sourse_Phonto=#{fileSoursePhonto}
+     where id=#{id}
+    </update>
+    <!--读取所有-->
+    <select id="readAll" resultType="com.yida.scdchangshoulvyoudemo.entity.LongevityProfile">
+        select * from t_longevity_profile
+    </select>
+</mapper>

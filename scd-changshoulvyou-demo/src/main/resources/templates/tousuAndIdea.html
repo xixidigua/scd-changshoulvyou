@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <!--BT4的CSS-->
+    <link rel="styleSheet" href="bootstrap/css/bootstrap.css">
+    <!--导入自己的CSS库-->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <!--导入favicon图标-->
+    <link rel="icon" href="favicon.ico">
+</head>
+<body id="body">
+<!-----------------------顶部topbar的begin--------------------------->
+<!--调用公共代码片段header-->
+<div th:replace="~{base::header}"></div>
+<!-----------------------顶部topbar的end----------------------------->
+
+
+<!------------------------左侧界面的begin------------------------------>
+<section class="yida-left-side " style="background-color:rgba(37,28,51,0.07)">
+    <div class="container-fluid h-100">
+        <div class=" row h-100 align-items-start">
+            <div th:replace="~{base::leftMenuBar(cname)}"></div>
+            <!------------------------左侧界面的end------------------------------>
+            <!------------------------右侧界面的begin------------------------------>
+            <div id="yida-main" class="col-10 ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 mt-4 bg-light  font-weight-bold" style="height: 40px">
+                            <span class="user-06">投诉和建议</span>
+                            <div class="d-flex flex-column align-items-end">
+                                <!-- <button type="button" class="user-07 btn btn-outline-success " >添加</button>-->
+                                <button type="button" id="deleteAll" class="user-08 btn btn-outline-success "
+                                        onclick="deleteAll()"><a
+                                        th:href="@{/deleteAllComplaintAndSuggest}" onclick="return confirm('确定删除吗?');">删除</a></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 bg-white " style="">
+                            <form id="form" th:action="@{/searchtousuAndIdea}" method="post">
+                                <div class="input-group input-group-sm mt-3">
+                                    <div>
+                                        <span style="font-size: 16px">反馈时间：</span>
+                                    </div>
+                                    <input  id="startTime" type="text" class="form-control col-2 Wdate mr-1" name="begin"
+                                            th:value="${startTime}"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,readOnly:true})"
+                                           style="width: 60px !important;height: 28px !important;"><span
+                                        style="font-size: 16px">到</span>
+                                    <input id="endTime"  type="text" class="form-control col-2  Wdate ml-1 mr-3" name="end"
+                                           th:value="${endTime}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,readOnly:true})"
+                                           style="width: 60px !important;height: 28px !important;">
+                                    <div class="ml-1 ">
+                                        <span style="font-size: 16px">阅读状态：</span>
+                                    </div>
+                                    <select id="select_scenic_spot" name="state" class="user-09">
+                                        <option th:each="readState:${readStates}"
+                                                th:value="${readState.id}"
+                                                th:text="${readState.name}"
+                                                th:selected="${readState.id==state_id}"></option>
+                                    </select>
+                                    <input type="hidden" name="strCur" id="hidden_cur">
+                                    <button type="submit" id="searchThem" class="btn bg-success text-white mr-5">搜索
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped " id="table" stripe>
+                    <tr class="table-info">
+                        <th>
+                            <div class="form-check">
+                                <input type="checkbox" id="checkbox"  class="form-check-input">
+                            </div>
+                        </th>
+                        <th>序号</th>
+                        <th>反馈内容</th>
+                        <th>阅读状态</th>
+                        <th>联系电话</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr th:each="c,status:${complaintAndSuggests}">
+                        <td>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input">
+                            </div>
+                        </td>
+                        <td th:text="${status.count}"></td>
+                        <td ><a
+                                th:href="@{/fanKuiAndSuggest(id=${c.id})}" style="color: yellowgreen" th:text="${c.name}"></a></td>
+
+                        <td th:text="${c.readState.name}"></td>
+                        <td th:text="${c.telphone}"></td>
+                        <td th:text="${c.updateTime}"></td>
+                        <td>
+                            <button type="button" class="btn btn-outline-success"><a
+                                    style="text-decoration: none;color:black" th:href="@{/deleteComplaintAndSuggest(id=${c.id})}"
+                                    onclick="return confirm('确定删除吗?');">删除</a></button>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="card-footer bg-white pb-0">
+                    <div class="form-inline align-items-end justify-content-end mb-1">
+                        <ul class="pagination pagination-sm mb-0 mt-0">
+
+                            <li class="page-item">
+                                <a class="page-link go_page mr-1" href="javascript:void(0)" data-page="1">第一页</a>
+                            </li>
+                            <li class="page-item mr-1" th:each="num:${page.navigatepageNums}">
+                                <a class="page-link go_page" href="javascript:void(0)" th:text="${num}"
+                                   th:data-page="${num}"></a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link  mr-2 go_page ml-1" href="javascript:void(0)"
+                                   th:data-page="${page.nextPage}"> 下一页 </a>
+                            </li>
+
+                        </ul>
+                        <div id="pages" class="text-muted align-self-center mr-2" style="font-size: 13px;"
+                             th:text="${'当前第'+page.pageNum+'页/共'+page.pages+'页'}"></div>
+                        <span class="text-muted align-self-center mr-1" style="font-size: 13px;">到第</span>
+                        <input type="text" class="mr-2 text-center align-items-center" style="width: 40px"
+                               id="input_text">
+                        <span class="text-muted align-self-center mr-2" style="font-size: 13px;">页</span>
+                        <input type="hidden" value="2" id="total_page_hidden">
+                        <input type="button" value="跳 转" class="btn btn-sm bg-success text-white" id="input_btn">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{base::footer01}"></div>
+    <div th:replace="~{base::footer02}"></div>
+
+
+</section>
+
+<!--以下bootstrap4的依赖js库，引入顺序不要错了哟!-->
+<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script src="My97DatePicker/WdatePicker.js"></script>
+<!--引入自己写的js-->
+<script type="text/javascript" src="js/complaintandsuggest.js"></script>
+
+</body>
+</html>

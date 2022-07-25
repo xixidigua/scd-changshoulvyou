@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <!--BT4的CSS-->
+    <link rel="styleSheet" href="bootstrap/css/bootstrap.css">
+    <!--导入自己的CSS库-->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <!--导入favicon图标-->
+    <link rel="icon" href="favicon.ico">
+</head>
+<body>
+<!-----------------------顶部topbar的begin--------------------------->
+<!--调用公共代码片段header-->
+<div th:replace="~{base::header}"></div>
+<!-----------------------顶部topbar的end----------------------------->
+
+
+<!------------------------左侧界面的begin------------------------------>
+<section class="yida-left-side " style="background-color:rgba(37,28,51,0.07)">
+    <div class="container-fluid h-100">
+        <div class=" row h-100 align-items-start">
+            <div th:replace="~{base::leftMenuBar(cname)}"></div>
+            <!------------------------左侧界面的end------------------------------>
+            <!------------------------右侧界面的begin------------------------------>
+            <div id="yida-main" class="col-10 ">
+                <form id="myform" enctype="multipart/form-data" method="post">
+                    <div class="container " style="height: 1200px">
+                        <div class="row">
+                            <div class="col-12 mt-4 bg-light  font-weight-bold" style="height: 50px">
+                                <label class="user-06 mt-2">编辑视频</label>
+                            </div>
+                            <div class="bg-white col-12 ">
+                                <div class="mt-4 ml-2 "
+                                     style="height: 60px;background-color: rgba(37, 28, 51, 0.07)">
+                                    <label class="text-danger ml-5 mt-3">*</label>
+                                    <label class="mt-3" style="font-size: 16px">标题：</label>
+                                    <input th:value="${videoColumn.title}"  id="input_tile" class="mt-3 ml-2" type="text" name="title"
+                                           placeholder="请输入不超过15个汉字的标题"
+                                           style="height:30px; outline-color: rgba(15,12,135,0.51);width: 220px">
+                                </div>
+                            </div>
+                            <div class="bg-white col-12 ">
+                                <div class="col-12  ">
+                                    <div class="mt-3 ml-1  " style="height:40px;">
+                                        <label class="text-danger ml-4 ">*</label>
+                                        <label style="font-size: 16px">分类：</label>
+                                        <select id="select_scenic_spot" name="Classify" class="user-09 ml-2"
+                                                style="width:200px!important;height: 30px!important;">
+                                            <option th:each="classify:${classifies}" th:value="${classify.id}"
+                                                    th:text="${classify.name}"th:selected="${classify.id==videoColumn.classify.id}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="mydiv" class="col-12 mt-3   " style="background-color: rgba(37, 28, 51, 0.07)">
+                                    <label class="text-danger h-75">*</label>
+                                    <label style="font-size: 16px">上传缩略图：</label>
+                                    <a id="uploadfile_a" onmouseenter="message()" onmouseleave="leave()"><input
+                                            type="file" id="myfile"><img id="myimage" th:src="${videoColumn.fileSoursePhonto}"
+                                                                         style="width:60px;height:60px;"><span
+                                            class="iconfont icon-huishouzhan  d-flex flex-column align-items-center justify-content-center"
+                                            id="litimg_del_btn" onclick="deletePhoto()"></span></a><br>
+                                    <label class="ml-5">&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&emsp;
+                                        提示：单张图片不得超过1M</label>
+                                </div>
+
+                                <div class="row col-12 bg-white ">
+                                    <label class="text-danger ml-4 mt-5 ">*</label>
+                                    <label class="mt-5" style="font-size: 16px">添加视频：</label>
+                                    <input type="hidden"  id="hidden" name="hidden">
+                                    <input type="hidden" name="id" id="id" th:value="${id}">
+                                    <table class="col-8 mt-2 table table-bordered bg-white  table-responsive-sm"
+                                           style="border: 0">
+                                        <thead class="thead-light h-50">
+                                        <tr class="table-info">
+                                            <th class="col-9 w-100">文件名</th>
+                                            <th class=" text-center">大小</th>
+                                            <th class=" text-center">移除文件</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="my_tbody" th:align="${videoColumn.fileVideoSourse}" >
+                                        <tr class="table-light">
+
+
+                                        </tr>
+                                        </tbody>
+                                        <tfoot class="table-secondary">
+                                        <tr>
+                                            <td id="my_tfoot_file">0个文件</td>
+                                            <td id="my_tfoot_totle">总计：</td>
+                                            <td id="my_tfoot_size">0.00KB</td>
+                                        </tr>
+                                        <tr>`
+                                            <td class="border-0 bg-white ">提示：单个视频不得超过50M</td>
+                                            <td class="border-0 bg-white "></td>
+                                            <td class="border-0 bg-white "></td>
+                                        </tr>
+                                        </tfoot>
+
+                                    </table>
+
+
+                                    <div class="col-2 ml-1 mt-3">
+                                        <div class="fileinput-button">
+                                            <button class="btn  bg-danger text-white " style="width: 75px">上传视频</button>
+                                            <input id="myfiles"  type="file" >
+                                        </div>
+                                        <div class=" ml-1 mt-2">
+                                            <input id="myupload" type="button" class="btn  bg-success text-white " style="width: 75px" onclick="uploadFile()" value="开始上传">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--  <span class="iconfont icon-huishouzhan bg-dark d-none" id="litimg_del_btn"></span>-->
+                                <!--d-none：不显现，d-inline-block：显现-->
+                                <div class="row col-12">
+
+                                    <div class="col-1"></div>
+                                    <div class="btn-group btn-group-sm">
+                                        <button id="submit_form_btn"
+                                               type="button" class="btn bg-success text-white text-center mt-3 ml-5 h-75"
+                                                style="width: 50px" onclick="publicMethod()">修改
+                                        </button>
+                                        <!--<button class="btn bg-success text-white mt-3 ml-3 h-75 " style="width: 50px">返回</button>-->
+                                        <a id="comeback" class="yida-submenu bg-success text-white mt-3 ml-3 h-75 "
+                                           th:href="@{/shipinliebiao}"
+                                           style="text-decoration: none;width:50px!important;display: block;text-align: center;line-height: 25px;">返回</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{base::footer01}"></div>
+    <div th:replace="~{base::footer02}"></div>
+
+
+</section>
+
+<!--以下bootstrap4的依赖js库，引入顺序不要错了哟!-->
+<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/bianjiyifabushipin.js"></script>
+</body>
+</html>

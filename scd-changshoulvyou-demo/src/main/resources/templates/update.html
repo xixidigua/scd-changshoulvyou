@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>update</title>
+</head>
+<body>
+<form th:action="@{/updateUser}" method="post" onsubmit="return secretPwd();">
+    <input type="hidden" name="id" th:value="${user.id}">
+    用户名：<input type="text" name="name" th:value="${user.name}"> <br>
+    密 码：<input type="password" name="password" th:value="${user.password}"> <br>
+    <input type="submit" value="修改">
+</form>
+</body>
+<script th:src="@{js/md5a.js}"></script>
+<script type="text/javascript">
+    function secretPwd() {
+        var name = document.getElementsByName("name")[0].value;
+        var password = document.getElementsByName("password")[0].value;
+        if (name==""||password=="") {
+            alert("用户名或密码不能为空");
+            return false;
+        }
+
+        var md5Pwd = md5(password);//md5加密
+        console.log("原始密码="+password+",md5密码="+md5Pwd);
+        document.getElementsByName("password")[0].value = md5Pwd;
+        return true;
+    }
+</script>
+</html>

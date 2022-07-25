@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.ScenicMapper">
+<!--读一个 -->
+    <select id="read" resultType="com.yida.scdchangshoulvyoudemo.entity.Scenic">
+        select  * from t_scenic where id=#{id}
+    </select>
+    <!--和Student多表关联查询使用的-->
+    <cache-ref namespace="com.yida.scdchangshoulvyoudemo.mapper.ScenicSpotsColumnMapper"/>
+</mapper>

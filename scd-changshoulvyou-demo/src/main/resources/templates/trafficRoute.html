@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <!--BT4的CSS-->
+    <link rel="styleSheet" href="bootstrap/css/bootstrap.css">
+    <!--导入自己的CSS库-->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <!--导入favicon图标-->
+    <link rel="icon" href="favicon.ico">
+</head>
+<body >
+<!-----------------------顶部topbar的begin--------------------------->
+<!--调用公共代码片段header-->
+<div th:replace="~{base::header}"></div>
+<!-----------------------顶部topbar的end----------------------------->
+
+
+<!------------------------左侧界面的begin------------------------------>
+<section class="yida-left-side " style="background-color:rgba(37,28,51,0.07)">
+    <div class="container-fluid h-100">
+        <div class=" row h-100 align-items-start">
+            <div th:replace="~{base::leftMenuBar(cname)}"></div>
+            <!------------------------左侧界面的end------------------------------>
+            <!------------------------右侧界面的begin------------------------------>
+            <div id="yida-main" class="col-10 ">
+                <form id="myform" enctype="multipart/form-data" method="post">
+                    <div class="container " style="height: 1200px"th:each="t:${trafficRoutes}">
+                        <div class="row">
+                            <div class="col-12 mt-4 bg-light  font-weight-bold" style="height: 50px">
+                                <label class="user-06 mt-2">交通路线</label>
+                            </div>
+                            <div class="bg-white col-12 " >
+                                <div class="mt-4 ml-2 "
+                                     style="background-color: rgba(37, 28, 51, 0.07)">
+                                    <label class="text-danger ml-1 mt-3">*</label>
+                                    <label class="mt-3" style="font-size: 16px">目的地名称：</label>
+                                    <input id="input_tile" class="mt-3 ml-2 w-50" type="text" name="name"
+                                     th:value="${t.name}"      placeholder="地址越详细经纬度越准确"
+                                           style="height:30px; outline-color: rgba(15,12,135,0.51);">
+                                    <button type="button" onclick="getLongitudeAndLatitude()" class="btn  ml-5 bg-success text-white " style="width: 90px">获取经纬度</button>
+                                </div>
+                            </div>
+                            <div class="bg-white col-12 ">
+                                <div class="mt-4 ml-2 "
+                                     style="height: 60px">
+                                    <label class="text-danger ml-5 mt-3">*</label>
+                                    <label class="mt-3" style="font-size: 16px">经度：</label>
+                                    <input id="longitude" class="mt-3 ml-2 w-50" type="text" name="longitude"
+                                           th:value="${t.longitude}"   placeholder="请输入或自动获取经度"
+                                           style="height:30px; outline-color: rgba(15,12,135,0.51);">
+                                </div>
+                            </div>
+                            <div class="bg-white col-12 ">
+                                <div class="mt-4 ml-2 "
+                                     style="height: 60px;background-color: rgba(37, 28, 51, 0.07)">
+                                    <label class="text-danger ml-5 mt-3">*</label>
+                                    <label class="mt-3" style="font-size: 16px">纬度：</label>
+                                    <input id="latitude" class="mt-3 ml-2 w-50" type="text" name="latitude"
+                                           th:value="${t.latitude}"      placeholder="请输入或自动获取经度"
+                                           style="height:30px; outline-color: rgba(15,12,135,0.51);">
+
+                                </div>
+                            </div>
+
+
+                            <div class="row col-12">
+
+                                <div class="col-1"></div>
+                                <div class="btn-group btn-group-sm">
+                                    <button id="submit_form_btn" type="button"
+                                            class="btn bg-success text-white text-center mt-3 ml-5 h-75"
+                                            style="width: 50px"
+                                            onclick="publicMethod()">提交
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div th:replace="~{base::footer01}"></div>
+    <div th:replace="~{base::footer02}"></div>
+
+
+</section>
+<!--以下bootstrap4的依赖js库，引入顺序不要错了哟!-->
+<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="js/trafficRoute.js"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=b850c2cfef116acbbbc80fad771e2196&plugin=AMap.Geocoder"></script>
+
+</body>
+</html>

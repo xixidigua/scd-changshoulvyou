@@ -1,0 +1,15 @@
+# 应用名称
+spring:
+  application:
+   name: scd-login
+    #注册中心
+  cloud:
+    nacos:
+     discovery:
+      server-addr: localhost:8848
+
+# 应用服务 WEB 访问端口
+server:
+  port: 8081
+
+

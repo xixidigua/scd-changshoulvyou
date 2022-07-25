@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <!--BT4的CSS-->
+    <link rel="styleSheet" href="bootstrap/css/bootstrap.css">
+    <!--导入自己的CSS库-->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <!--导入favicon图标-->
+    <link rel="icon" href="favicon.ico">
+</head>
+<body>
+<!-----------------------顶部topbar的begin--------------------------->
+<!--调用公共代码片段header-->
+<div th:replace="~{base::header}"></div>
+<!-----------------------顶部topbar的end----------------------------->
+
+
+<!------------------------左侧界面的begin------------------------------>
+<section class="yida-left-side " style="background-color:rgba(37,28,51,0.07)">
+    <div class="container-fluid h-100">
+        <div class=" row h-100 align-items-start">
+            <div th:replace="~{base::leftMenuBar(cname)}"></div>
+            <!------------------------左侧界面的end------------------------------>
+            <!------------------------右侧界面的begin------------------------------>
+            <div id="yida-main" class="col-10 ">
+                <div class="container " style="height: 1200px">
+                    <div class="row">
+                        <div class="col-12 mt-4 bg-light  font-weight-bold" style="height: 50px">
+                            <label class="user-06 mt-2" >反馈内容</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-1 bg-white  font-weight-bold">
+                      <textarea readonly="" class="w-100 bg-light rounded p-2 mt-2"
+                                style="min-height:350px; resize: none;" th:text="${str}"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row col-12">
+                        <div class="btn-group btn-group-sm">
+                            <a id="comeback" class="yida-submenu bg-success text-white mt-3 h-75 "
+                               th:href="@{/tousuAndIdea}"
+                               style="text-decoration: none;width:50px!important;display: block;text-align: center;line-height: 25px;">完成</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!--以下bootstrap4的依赖js库，引入顺序不要错了哟!-->
+<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

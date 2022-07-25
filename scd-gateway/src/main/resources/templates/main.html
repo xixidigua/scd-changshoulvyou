@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>main</title>
+</head>
+<body>
+这是主页！欢迎你！！
+<br><br>
+<a th:href="@{/logout}">登出</a>
+<br><br>
+<a th:href="@{/main/addUserPage}">添加用户</a>
+<br><br>
+<a th:href="@{/main/findAll}">查看所有用户</a>
+<br><br>
+<a th:href="@{/main/findSelf}">查看个人信息</a>
+<br><br>
+<a th:href="@{/main/updateSelf}">修改个人信息</a>
+</body>
+</html>

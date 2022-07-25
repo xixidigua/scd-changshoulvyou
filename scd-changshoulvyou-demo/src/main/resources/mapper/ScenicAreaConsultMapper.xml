@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.ScenicAreaConsultMapper">
+    <!--增-->
+    <insert id="add">
+    insert into  t_scenic_area (name,phone_Number)
+    values
+    (#{name},#{phoneNumber})
+</insert>
+    <!--针对oracle增加，单独设计-->
+    <insert id="add" databaseId="oracle">
+    insert  into
+    t_scenic_area(id,name,phoneNumber)
+     values
+    (t_scenic_area_seq.nextval,#{name},#{updatetime})
+</insert>
+
+    <resultMap id="base_map" type="com.yida.scdchangshoulvyoudemo.entity.ScenicAreaConsult">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="phoneNumber" column="phone_Number"></result>
+    </resultMap>
+    <!--读取所有-->
+    <select id="readAll" resultMap="base_map">
+        select * from t_scenic_area
+    </select>
+</mapper>

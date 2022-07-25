@@ -1,0 +1,68 @@
+#配置上下文路径及端口号
+spring:
+  application:
+    name: scd-changshoulvyou-demo
+    #配置redis
+  redis:
+    port: 6379
+    host: localhost
+    database: 0
+    #上传文件功能
+    #上传文件总的最大值10MB
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 5MB
+    #服务注册中心
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+  #配置MySQL数据库基本信息
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3308/mybatis1?useSSL=false&serverTimezone=Asia/Shanghai&useServerPrepStmts=true&cachePrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    #配置数据库连接池的其他信息(通用的，对其它数据库连接池也一样)
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+# 配置log4j2的日志路径
+loggin:
+  config: classpath:log4j2.xml
+  # 打印dao 层debug信息
+  level:
+    com:
+      yida:
+        scdchangshoulvyoudemo:
+          mapper: debug
+# 配置mybatis映射文件的位置
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml
+# 配置通用mapper
+mapper:
+  mappers: tk.mybatis.mapper.common.Mapper
+  before: true
+#设置加密算法（MD5，SHA-1,SHA-256）
+Credential:
+  AlgorithmName:  MD5
+  #设置加密次数
+  hashIterations: 1024
+
+# 端口号
+server:
+  port: 8090
+
+

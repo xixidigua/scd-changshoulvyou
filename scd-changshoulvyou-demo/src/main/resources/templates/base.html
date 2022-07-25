@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <!--视图的窗口，即：视口。-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <!--BT4的CSS-->
+    <link rel="styleSheet" th:href="@{/bootstrap/css/bootstrap.css}">
+    <!--导入自己的CSS库-->
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/font/iconfont.css}">
+    <!--导入favicon图标-->
+    <link rel="icon" th:href="@{/favicon.ico}">
+
+</head>
+<body>
+
+<!-----------------------顶部topbar的begin--------------------------->
+
+<header class="yida-topbar" style="background-color:rgba(103,104,195,1)" th:fragment="header">
+    <div class="container-fluid h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12  h-100">
+                <div class="row h-100 align-items-center">
+                    <div class=" yida-col1 col-6">
+                        <div>
+                            <span class="iconfont icon-shouye text-white" style="font-size: 18px!important;"></span>
+                            <span class="text-white ">长寿旅游管理后台</span>
+                        </div>
+                    </div>
+                    <div class=" yida-col2 col-6">
+                        <div class="d-flex flex-row  justify-content-end" style="margin-top: 23px">
+                            <span class="text-white mr-1 ">用户名: 管理员</span>
+                            <a th:href="@{/password}" class=" mr-1 text-white">修改密码</a>
+                            <span class="text-white mr-1">|</span>
+                            <a th:href="@{/logout}" class="  text-white">注销用户</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-----------------------顶部topbar的end----------------------------->
+
+<!------------------------左侧界面的begin------------------------------>
+<section class="yida-left-side " style="background-color:rgba(37,28,51,0.07)">
+    <div class="container-fluid h-100">
+        <div class=" row h-100 align-items-start">
+            <div class="col-2" th:fragment="leftMenuBar(cname)">
+                <div class="user-01 nav-link bg-secondary mt-2 font-weight-bold text-white"><span>景点</span></div>
+                <div class="user-02 nav-link bg-light  font-weight-bold"
+                     style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu " id="jingdianliebiao" th:href="@{/jingdianliebiao}">景点列表</a></div>
+
+                <div class="user-01 nav-link bg-secondary font-weight-bold text-white"><span>消息</span></div>
+                    <div class="user-03 nav-link bg-light font-weight-bold"
+                         style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu" id="jiaodianxinxiliebiao"
+                                                                                         th:href="@{/jiaodianxinxiliebiao}">焦点消息</a>
+                    </div>
+                    <div class="user-02 nav-link bg-light font-weight-bold"
+                         style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu" id="xiaoxiliebiao"       th:href="@{/xiaoxiliebiao}">消息列表</a>
+                    </div>
+                    <div class="user-01 nav-link bg-secondary font-weight-bold text-white"><span>视频</span></div>
+                    <div class="user-02 nav-link bg-light font-weight-bold  "
+                         style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu" id="shipinliebiao"
+                                                                                         th:href="@{/shipinliebiao}">视频列表</a>
+                    </div>
+                    <div class="user-01 nav-link bg-secondary  font-weight-bold text-white"><span>周边</span></div>
+                    <div class="user-02 nav-link bg-light   font-weight-bold  "
+                         style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu"id="zhoubianliebiao"
+                                                                                         th:href="@{/zhoubianliebiao}">周边列表</a>
+                    </div>
+                    <div class="user-01 nav-link bg-secondary    font-weight-bold text-white"><span>服务</span></div>
+                    <div class="user-04 nav-link bg-light   font-weight-bold "
+                         style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu" id="jingquzixun"
+                                                                                         th:href="@{/jingquzixun}">景区咨询</a>
+                    </div>
+                    <div class="user-03 nav-link bg-light    font-weight-bold  "
+                         style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu"
+                                                                                         th:href="@{/tousuAndIdea}">投诉和建议</a>
+                    </div>
+                    <div class="user-02 nav-link bg-light   font-weight-bold"
+                         style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu" id="trafficRoute"
+                                                                                         th:href="@{/trafficRoute}">交通路线</a>
+                    </div>
+                    <div class="user-01 nav-link bg-secondary   font-weight-bold text-white"><span>系统设置</span></div>
+                    <div class="user-04 nav-link bg-light   font-weight-bold  "
+                         style=" background-color: rgba(37, 28, 51, 0.07)!important;"><a  id="LongevityProfile"
+                            class="yida-submenu font-weight-bold" th:href="@{/changshougaikuang}">长寿概况</a>
+                    </div>
+                    <div class="user-02 nav-link bg-light   font-weight-bold  "
+                         style="background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu" id="VersionMange"
+                                                                                        th:href="@{/banbenManage}">版本管理</a>
+                    </div>
+                <div class="user-02 nav-link bg-light   font-weight-bold  "
+                     style="background-color: rgba(37, 28, 51, 0.07)!important;"><a class="yida-submenu"  th:href="@{/main}">用户管理</a>
+                </div>
+                    <!------------------------左侧界面的end------------------------------>
+                    <!------------------------右侧界面的begin------------------------------>
+
+                    <!------------------------右侧界面的end------------------------------>
+                </div>
+            </div>
+            <div id="user-12" class="col-1-sm bg-dark text-white text-center h-auto w-auto  " th:fragment="footer01">
+                1111
+            </div>
+            <div id="user-22" class="col-1-sm bg-dark text-white text-center h-auto w-auto  " th:fragment="footer02">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--以下bootstrap4的依赖js库，引入顺序不要错了哟!-->
+<script type="text/javascript" th:src="@{/bootstrap/js/jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/My97DatePicker/WdatePicker.js}"></script>
+<script type="text/javascript" th:src="@{/js/admin.js}"></script>
+</body>
+</html>

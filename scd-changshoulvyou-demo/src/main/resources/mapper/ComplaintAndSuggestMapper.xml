@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.ComplaintAndSuggestMapper">
+
+    <resultMap id="base_map" type="com.yida.scdchangshoulvyoudemo.entity.ComplaintAndSuggest">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="telphone" column="telphone"></result>
+        <result property="updateTime" column="Update_Time"></result>
+        <!--分布式查询-->
+        <association property="readState" select="com.yida.scdchangshoulvyoudemo.mapper.ReadStateMapper.read" column="state_id"/>
+    </resultMap>
+    <!--读取所有-->
+    <select id="readAll" resultMap="base_map">
+        select * from t_complaint_suggest
+    </select>
+    <!--    读一个-->
+    <select id="readOne" resultMap="base_map">
+        select * from t_complaint_suggest where id=#{id}
+    </select>
+<!--    &lt;!&ndash;按id查询&ndash;&gt;
+    <select id="readScenic" resultType="com.yida.changshoulvyoudemo.entity.ScenicSpotsColumn">
+        select *from t_scenic_spots_column
+        <where>
+            <if test="scenic_id!=null and scenic_id!=1">
+                scenic_id= #{scenic_id}
+            </if>
+        </where>
+    </select>-->
+    <!--根据景区标题  所属景区 更新时间查询-->
+
+   <select id="read" resultMap="base_map">
+    select * from  t_complaint_suggest,t_read_state
+     <where>
+         t_complaint_suggest.state_id=t_read_state.id
+         <if test="state_id!=null and state_id!=1" >
+             and t_read_state.id=#{state_id}
+         </if>
+         <if test="startTime!=null and startTime!=''" >
+            and   t_complaint_suggest.Update_Time >= #{startTime}
+         </if>
+         <if test="endTime!=null and endTime!=''" >
+             and  #{endTime} >= t_complaint_suggest.Update_Time
+         </if>
+     </where>
+    </select>
+</mapper>

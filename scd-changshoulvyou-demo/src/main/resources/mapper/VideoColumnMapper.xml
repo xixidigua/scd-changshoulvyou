@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.VideoColumnMapper">
+    <!--增-->
+    <insert id="add">
+    insert into t_video_column (title,classify_id,video_total_size,file_video_Sourse,file_Sourse_Phonto,Update_Time)
+    values
+    (#{title},#{classify.id},#{videoTotalSize},#{fileVideoSourse},#{fileSoursePhonto},#{updateTime})
+</insert>
+    <!--针对oracle增加，单独设计-->
+    <insert id="add" databaseId="oracle">
+    insert  into
+   t_video_column(id,name,t_video_column)
+     values
+    (t_video_column_seq.nextval,#{name},#{updatetime})
+</insert>
+    <!--改-->
+    <update id="update">
+        update t_video_column set title= #{title},classify_id=#{classify.id},video_total_size=#{videoTotalSize},file_video_Sourse=#{fileVideoSourse},file_Sourse_Phonto=#{fileSoursePhonto},Update_Time=#{updateTime}
+    where id=#{id}
+    </update>
+
+    <resultMap id="base_map" type="com.yida.scdchangshoulvyoudemo.entity.VideoColumn">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="fileVideoSourse" column="file_video_Sourse"></result>
+        <result property="fileSoursePhonto" column="file_Sourse_Phonto"></result>
+        <result property="updateTime" column="Update_Time"></result>
+        <!--分布式查询-->
+        <association property="classify" select="com.yida.scdchangshoulvyoudemo.mapper.ClassifyMapper.read" column="classify_id"/>
+    </resultMap>
+    <!--读取所有-->
+    <select id="readAll" resultMap="base_map">
+        select * from t_video_column
+    </select>
+    <!--    读一个-->
+    <select id="readOne" resultMap="base_map">
+        select * from t_video_column  where id=#{id}
+    </select>
+
+    <!--根据景区标题  所属景区 更新时间查询-->
+
+   <select id="read" resultMap="base_map">
+    select * from  t_video_column,t_classify
+     <where>
+         t_video_column.classify_id=t_classify.id
+         <if test="title!=null and title!=''" >
+             and t_video_column.title LIKE #{title}
+         </if>
+         <if test="classify_id!=null and classify_id!=1" >
+             and t_classify.id= #{classify_id}
+         </if>
+         <if test="startTime!=null and startTime!=''" >
+            and  t_video_column.Update_Time >= #{startTime}
+         </if>
+         <if test="endTime!=null and endTime!=''" >
+             and  #{endTime} >=t_video_column.Update_Time
+         </if>
+     </where>
+    </select>
+</mapper>

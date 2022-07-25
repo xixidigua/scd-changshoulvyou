@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <!--BT4的CSS-->
+    <link rel="styleSheet" href="bootstrap/css/bootstrap.css">
+    <!--导入自己的CSS库-->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <!--导入favicon图标-->
+    <link rel="icon" href="favicon.ico">
+</head>
+<body>
+<!-----------------------顶部topbar的begin--------------------------->
+<!--调用公共代码片段header-->
+<div th:replace="~{base::header}"></div>
+<!-----------------------顶部topbar的end----------------------------->
+
+
+<!------------------------左侧界面的begin------------------------------>
+<section class="yida-left-side " style="background-color:rgba(37,28,51,0.07)">
+    <div class="container-fluid h-100">
+        <div class=" row h-100 align-items-start">
+            <div th:replace="~{base::leftMenuBar(cname)}"></div>
+            <!------------------------左侧界面的end------------------------------>
+            <!------------------------右侧界面的begin------------------------------>
+            <div id="yida-main" class="col-10 ">
+                <form id="myform" enctype="multipart/form-data" method="post">
+                    <div class="container " style="height: 1200px">
+                        <div class="row" th:each="L:${longevityProfiles}">
+                            <div class="col-12 mt-4 bg-light  font-weight-bold" style="height: 50px">
+                                <label class="user-06 mt-2">长寿概况</label>
+                            </div>
+                            <div class="bg-white col-12 ">
+                                <div class="mt-4 ml-2 "
+                                     style="height: 60px;background-color: rgba(37, 28, 51, 0.07)">
+                                    <label class="text-danger ml-4 mt-3">*</label>
+                                    <label class="mt-3" style="font-size: 16px">标题：</label>
+                                    <input id="input_tile" class="mt-3 ml-2 w-50" type="text" name="name"
+                                           th:value="${L.name}"    placeholder="请输入不超过15个汉字的标题"
+                                           style="height:30px; outline-color: rgba(15,12,135,0.51);">
+                                </div>
+                            </div>
+
+                            <div class=" ml-1 bg-white col-12 row h-100 w-100  ">
+                                <div class="mt-4  d-flex flex-column justify-content-center">
+                                    <label style="font-size: 16px"> <label
+                                            class="text-danger ml-4 ">*</label>内容：</label>
+                                </div>
+                                <textarea id="editor_id" class="textarea mt-3 ml-4" name="content"
+                                          th:text="${L.fileSourse}"     style="width:700px;height:300px;"></textarea>
+                            </div>
+                            <div class="row col-12 bg-white w-100 ">
+                                <label class="mt-5" style="font-size: 16px">上传配图：</label>
+                                <input type="hidden"  id="hidden" name="hidden">
+                                <table class="col-8 mt-2 table table-bordered bg-white  table-responsive-sm"
+                                       style="border: 0">
+                                    <thead class="thead-light h-50">
+                                    <tr class="table-info">
+                                        <th class="col-9 w-100">文件名</th>
+                                        <th class=" text-center">大小</th>
+                                        <th class=" text-center">移除文件</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="my_tbody" th:align="${L.fileSoursePhonto}" >
+                                    <tr class="table-light">
+
+
+                                    </tr>
+                                    </tbody>
+                                    <tfoot class="table-secondary">
+                                    <tr>
+                                        <td id="my_tfoot_file">0个文件</td>
+                                        <td id="my_tfoot_totle">总计：</td>
+                                        <td id="my_tfoot_size">0.00KB</td>
+                                    </tr>
+                                    <tr>`
+                                        <td class="border-0 bg-white ">提示：单张图片不得超过1M,上传图片尺寸不能小于320*180!</td>
+                                        <td class="border-0 bg-white "></td>
+                                        <td class="border-0 bg-white "></td>
+                                    </tr>
+                                    </tfoot>
+
+                                </table>
+
+
+                                <div class="col-2 ml-1 mt-3">
+                                    <div class="fileinput-button">
+                                        <button class="btn  bg-danger text-white " style="width: 75px">选择图片</button>
+                                        <input id="myfiles"  type="file" >
+                                    </div>
+                                    <div class=" ml-1 mt-2">
+                                        <input id="myupload" type="button" class="btn  bg-success text-white " style="width: 75px" onclick="uploadFile()" value="开始上传">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row col-12">
+
+                                <div class="col-1"></div>
+                                <div class="btn-group btn-group-sm">
+                                    <button id="submit_form_btn" type="button"
+                                            class="btn bg-success text-white text-center mt-3 ml-5 h-75"
+                                            style="width: 50px"
+                                            onclick="publicMethod()">提交
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{base::footer01}"></div>
+    <div th:replace="~{base::footer02}"></div>
+
+
+</section>
+
+<!--以下bootstrap4的依赖js库，引入顺序不要错了哟!-->
+<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+
+<script type="text/javascript" src="js/changshougaikuang.js"></script>
+<!--引入KindEditor的js-->
+<script charset="utf-8" src="KindEditor/kindeditor-all.js"></script>
+<script charset="utf-8" src="KindEditor/lang/zh-CN.js"></script>
+
+</body>
+</html>
+<script>
+    //关闭过滤模式，保留所有标签
+    KindEditor.options.filterMode = false;
+    KindEditor.ready(function (K) {
+        window.editor = K.create('#editor_id', {
+            themeType: 'default', //定义主题风格，default，simple
+            /*items:[ //定义显示的菜单图标
+                'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+                'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+                'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+                'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+                'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+                'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+                'anchor', 'link', 'unlink'
+            ],*/
+            items: [ //定义显示的菜单图标
+                'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+                'italic', 'underline', 'removeformat', '|', 'justifyleft',
+                'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', 'link', 'plainpaste', 'image'
+            ],
+            uploadJson: 'upload',
+            fileManagerJson: 'browser',
+            //指定后台接收的图片的名称
+            filePostName: 'aa',
+            cssPath: 'kindeditor/plugins/code/prettify.css', allowFileManager: true, resizeType: 0
+            /*   afterBlur:function () {
+            this.async();
+           }*/
+        });
+    });
+
+    function getContent() {
+        //方式一： 取得HTML内容
+        var html = editor.html();
+        console.log(html);
+
+        //方式二： 同步数据后可以直接取得textarea的value
+        //editor.sync();
+        //html = document.getElementById('editor_id').value; // 原生API
+        //console.log(html);
+    }
+
+    function setContent() {
+        // 设置HTML内容
+        editor.html('333HTML内容111222');
+    }
+</script>
+

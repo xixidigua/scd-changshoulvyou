@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.RimColumnMapper">
+    <!--增-->
+    <insert id="add">
+    insert into t_rim_column (title,classify_id,abode_classify,traffic_Message,consult_Price,recommend_greens,address,map_Show_Name,longitude,latitude,telphone,intro,file_Sourse,file_Sourse_Phonto,Update_Time)
+    values
+    (#{title},#{consumptionClassify.id},#{abodeClassify},#{trafficMessage},#{consultPrice},#{recommendGreens},#{address},#{mapShowName},#{longitude},#{latitude},#{telphone},#{intro},#{fileSourse},#{fileSoursePhonto},#{updateTime})
+</insert>
+    <!--针对oracle增加，单独设计-->
+    <insert id="add" databaseId="oracle">
+    insert  into
+   t_rim_column(id,name,t_rim_column)
+     values
+    (t_rim_column_seq.nextval,#{name},#{updatetime})
+</insert>
+    <!--改-->
+    <update id="update">
+        update t_rim_column set title= #{title},classify_id=#{consumptionClassify.id},abode_classify=#{abodeClassify},traffic_Message=#{trafficMessage},consult_Price=#{consultPrice}, recommend_greens=#{recommendGreens},address=#{address},map_Show_Name=#{mapShowName},longitude=#{longitude},latitude=#{latitude},telphone=#{telphone},intro=#{intro},file_Sourse=#{fileSourse},file_Sourse_Phonto=#{fileSoursePhonto},Update_Time=#{updateTime}
+    where id=#{id}
+    </update>
+
+    <resultMap id="base_map" type="com.yida.scdchangshoulvyoudemo.entity.RimColumn">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="abodeClassify" column="abode_classify"></result>
+        <result property="trafficMessage" column="traffic_Message"></result>
+        <result property="consultPrice" column="consult_Price"></result>
+        <result property="recommendGreens" column="recommend_greens"></result>
+        <result property="address" column="address"></result>
+        <result property="mapShowName" column="map_Show_Name"></result>
+        <result property="longitude" column="longitude"></result>
+        <result property="latitude" column="latitude"></result>
+        <result property="telphone" column="telphone"></result>
+        <result property="intro" column="intro"></result>
+        <result property="fileSourse" column="file_Sourse"></result>
+        <result property="fileSoursePhonto" column="file_Sourse_Phonto"></result>
+        <result property="updateTime" column="Update_Time"></result>
+        <!--分布式查询-->
+        <association property="consumptionClassify" select="com.yida.scdchangshoulvyoudemo.mapper.ConsumptionClassifyMapper.read" column="classify_id"/>
+    </resultMap>
+    <!--读取所有-->
+    <select id="readAll" resultMap="base_map">
+        select * from t_rim_column
+    </select>
+    <!--    读一个-->
+    <select id="readOne" resultMap="base_map">
+        select * from t_rim_column where id=#{id}
+    </select>
+<!--    &lt;!&ndash;按id查询&ndash;&gt;
+    <select id="readScenic" resultType="com.yida.changshoulvyoudemo.entity.ScenicSpotsColumn">
+        select *from t_scenic_spots_column
+        <where>
+            <if test="scenic_id!=null and scenic_id!=1">
+                scenic_id= #{scenic_id}
+            </if>
+        </where>
+    </select>-->
+    <!--根据景区标题  所属景区 更新时间查询-->
+
+   <select id="read" resultType="com.yida.scdchangshoulvyoudemo.entity.RimColumn">
+    select * from  t_rim_column,r_classify
+     <where>
+         t_rim_column.classify_id=r_classify.id
+         <if test="title!=null and title!=''" >
+             and  t_rim_column.title LIKE #{title}
+         </if>
+         <if test="classify_id!=null and classify_id!=1" >
+             and r_classify.id= #{classify_id}
+         </if>
+         <if test="startTime!=null and startTime!=''" >
+            and   t_rim_column.Update_Time >= #{startTime}
+         </if>
+         <if test="endTime!=null and endTime!=''" >
+             and  #{endTime} >= t_rim_column.Update_Time
+         </if>
+     </where>
+    </select>
+</mapper>

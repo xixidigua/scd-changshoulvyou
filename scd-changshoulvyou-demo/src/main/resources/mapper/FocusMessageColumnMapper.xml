@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.FocusMessageColumnMapper">
+    <!--增-->
+    <insert id="add">
+    insert into t_focus_message_column  (title,file_Sourse,file_Sourse_Phonto,Update_Time)
+    values
+    (#{title},#{fileSourse},#{fileSoursePhonto},#{updateTime})
+</insert>
+    <!--针对oracle增加，单独设计-->
+    <insert id="add" databaseId="oracle">
+    insert  into
+    t_focus_message_column(id,name,t_scenic_spots_column)
+     values
+    (t_focus_message_column_seq.nextval,#{name},#{updatetime})
+</insert>
+    <!--改-->
+    <update id="update">
+        update t_focus_message_column set title= #{title},file_Sourse=#{fileSourse},file_Sourse_Phonto=#{fileSoursePhonto},Update_Time=#{updateTime}
+    where id=#{id}
+    </update>
+    <!--修改焦点非焦点功能-->
+    <update id="setFocus">
+        update t_focus_message_column set Logo= #{logo}
+    where id=#{id}
+    </update>
+
+    <resultMap id="base_map" type="com.yida.scdchangshoulvyoudemo.entity.FocusMessageColumn">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="fileSourse" column="file_Sourse"></result>
+        <result property="fileSoursePhonto" column="file_Sourse_Phonto"></result>
+        <result property="updateTime" column="Update_Time"></result>
+        <!--没有分布式查询-->
+        <!--<association property="scenic" select="com.yida.changshoulvyoudemo.mapper.ScenicMapper.read" column="scenic_id"/>-->
+    </resultMap>
+    <!--消息列表读取所有-->
+    <select id="readAll" resultMap="base_map">
+        select * from t_focus_message_column where t_focus_message_column.logo=1
+    </select>
+    <select id="readAllMessage" resultMap="base_map">
+        select * from t_focus_message_column
+    </select>
+
+    <!--    读一个-->
+    <select id="readOne" resultMap="base_map">
+        select * from t_focus_message_column where id=#{id}
+    </select>
+
+<!--    &lt;!&ndash;按id查询&ndash;&gt;
+    <select id="readScenic" resultType="com.yida.changshoulvyoudemo.entity.ScenicSpotsColumn">
+        select *from t_scenic_spots_column
+        <where>
+            <if test="scenic_id!=null and scenic_id!=1">
+                scenic_id= #{scenic_id}
+            </if>
+        </where>
+    </select>-->
+
+    <!--根据消息标题  所属景区 更新时间查询-->
+<!--查询焦点消息-->
+  <select id="read" resultType="com.yida.scdchangshoulvyoudemo.entity.FocusMessageColumn">
+    select id, title ,Update_Time from  t_focus_message_column
+     <where>
+         t_focus_message_column.logo=1
+         <if test="title!=null and title!=''" >
+             and t_focus_message_column.title LIKE #{title}
+         </if>
+         <if test="startTime!=null and startTime!=''" >
+            and  t_focus_message_column.Update_Time >= #{startTime}
+         </if>
+         <if test="endTime!=null and endTime!=''" >
+         and  #{endTime} >=t_focus_message_column.Update_Time
+     </if>
+     </where>
+    </select>
+    <!--查询消息-->
+    <select id="readMessage" resultType="com.yida.scdchangshoulvyoudemo.entity.FocusMessageColumn">
+        select id, title ,Update_Time,Logo from  t_focus_message_column
+        <where>
+            <if test="title!=null and title!=''" >
+                and t_focus_message_column.title LIKE #{title}
+            </if>
+            <if test="startTime!=null and startTime!=''" >
+                and  t_focus_message_column.Update_Time >= #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''" >
+                and  #{endTime} >=t_focus_message_column.Update_Time
+            </if>
+        </where>
+    </select>
+</mapper>

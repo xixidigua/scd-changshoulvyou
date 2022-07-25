@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- <Console>表示输出日志到控制台
+              1）name：指定控制台标识，后面<Root>标签需要引用。
+              2）target：指定输出目标。
+         -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- <PatternLayout>表示显示内容格式
+                  1）pattern：指定具体显示的内容格式，如下：
+                     %d{yyyy-MM-dd HH:mm:ss} 表示日期，比如：2019-06-28 13:51:20。
+                     %t 表示执行的当前线程名称，比如：main主线程。
+                     %-5level 表示日志级别，log4j2有6种级别：trace debug info warn error fatal。-5表示左对齐显示5个字符，不足补空格。
+                     %C 表示全类名。
+                     %M 表示类中的方法名。
+                     %L 表示第几行代码。
+                     %msg 表示输出的日志信息。
+                     %n 表示回车换行。
+             -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %C.%M %L - %msg%n"/>
+        </Console>
+        <!-- <RollingFile>表示输出日志到文件，支持文件滚动。
+              1）name：指定文件标识，后面<Root>标签需要引用。
+              2）fileName：指定输出的日志文件名，logs/log4j2.log表示在当前项目目录下生成logs文件夹，在该文件夹里有个log4j2.log文件。
+              3）filePattern：指定满足条件时，触发文件滚动，创建新日志文件的命名格式。
+         -->
+        <RollingFile name="File" fileName="logs/log4j2.log" filePattern="logs/log4j2_%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %C.%M %L - %msg%n"/>
+            <Policies>
+                <!-- <SizeBasedTriggeringPolicy>表示按日志文件大小策略，进行文件滚动。
+                          1）size：指定日志文件大小，即：log4j2.log文件大小超过10M时，触发文件滚动。
+                       注意：除了按日志文件大小策略外，还有按时间策略的<TimeBasedTriggeringPolicy/>，比如：1天产生一个日志文件。
+                 -->
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <!-- <DefaultRolloverStrategy>指定文件滚动时，创建的新日志文件的数量。
+                      1）min：指定最少1个;
+                      2）max：指定最多不超过5个，当超过时，会自动覆盖最前面的日志文件。
+             -->
+            <DefaultRolloverStrategy min="1" max="5" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- <AppenderRef> 表示要引用日志终端(控制台，文件)，并限定其日志级别（TRANCE DEBUG INFO WARN ERROR FATAL）。 -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+        <!--记录druid-sql的记录-->
+        <Logger name="druid.sql.Statement" level="DEBUG" additivity="false">
+            <appender-ref ref="File"/>
+        </Logger>
+        <!--log4j2 自带过滤日志-->
+        <Logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR" />
+        <Logger name="org.apache.catalina.util.LifecycleBase" level="ERROR" />
+        <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN" />
+        <Logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>
+        <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN" />
+        <Logger name="org.crsh.plugin" level="WARN" />
+        <logger name="org.crsh.ssh" level="WARN"/>
+        <Logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR" />
+        <Logger name="org.hibernate.validator.internal.util.Version" level="WARN" />
+        <Logger name="org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration" level="WARN"/>
+        <Logger name="org.springframework.boot.actuate.endpoint.jmx" level="WARN"/>
+        <Logger name="org.thymeleaf" level="WARN"/>
+    </Loggers>
+</Configuration>

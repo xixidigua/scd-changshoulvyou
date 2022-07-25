@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>unauthorized</title>
+</head>
+<body>
+<div  th:if="${loginError!=null}" th:text="${loginError}" class="text-danger" style="background-color: rgba(255,177,186,0.42);"></div>
+</body>
+</html>

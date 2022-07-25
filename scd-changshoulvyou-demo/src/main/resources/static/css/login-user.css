@@ -1,0 +1,16 @@
+#user-00 {
+    height: 250px;
+    width: 380px;
+    border: solid #999999 1px;
+    box-shadow: 0 0 0 5px rgba(142, 59, 255, 0.13);
+}
+.submit{
+    border-radius: 10rem;
+    height: 25px!important;
+    width: 80px!important;
+    background-color: lightgray;
+    margin-left: 220px;
+    text-decoration: none!important;
+    color: black;
+}
+

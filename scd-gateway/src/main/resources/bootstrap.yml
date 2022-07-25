@@ -1,0 +1,111 @@
+# 应用名称
+spring:
+  application:
+   name: scd-gateway
+  redis:
+    port: 6379
+    host: localhost
+    database: 0
+  #注册中心
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  #mysql数据库基础信息
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3308/shiro1?useSSL=false&serverTimezone=Asia/Shanghai&useServerPrepStmts=true&cachePrepStmts=true&rewriteBatchedStatements=true&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    #数据库连接池配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+#mybatis相关配置
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml
+
+#设置熔断器
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            #超时时间，默认1000ms
+            #注意：这里的时间大小取决于ribbon的ReadTimeout，ConnectTimeout，超时重试次数，重试负载均衡次数。
+            #计算公式：(1+MaxAutoRetriesNextServer+(1+MaxAutoRetriesNextServer)*MaxAutoRetries)*(ReadTimeout+ConnectTimeout)，
+            #考虑网络因素，计算结果最好再加1秒
+            timeoutInMilliseconds: 11000
+      circuitBreaker:
+        #熔断器开启的阀值，具体指在最近统计时间(默认10s)内请求的次数(默认20次)。也就是10秒内至少请求20次，才触发熔断器机制
+        requestVolumeThreshold: 10 #做测试使用，这里改为10次
+        #熔断器工作时间(默认5s)，即：5秒内熔断器会中断前端请求，执行回调方法，5秒后会关闭重试(状态由OPEN切换到HELF OPEN),
+        #如果请求成功，则关闭熔断器(状态由HELF OPEN切换到CLOSE);
+        #如果请求仍然失败,继续打开熔断器5秒(状态由HELF OPEN切换到OPEN),如此循环。
+        sleepWindowInMilliseconds: 5000
+        #当出错率超过50%(默认50)，启动熔断器
+        errorThresholdPercentage: 50
+#设置feign熔断可用，默认值false
+feign:
+  hystrix:
+    enabled: true
+#设置ribbon
+ribbon:
+  # ribbon建立连接后从服务器读取到可用资源所用的时间, 默认值1秒
+  # 超过1秒没有读取到内容时，就认为此次读取不到内容并抛出Java.net.SocketException: read time out的异常
+  # 一般设置为2~5秒
+  ReadTimeout: 3000
+
+  # ribbon请求连接的超时时间，默认值1000
+  # 指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间
+  ConnectTimeout: 2000
+
+  # 因为ribbon的重试机制和Feign的重试机制有冲突，所以源码中默认关闭Feign的重试机制
+  # 对所有的操作请求都进行重试，如果是post,put等操作没有实现幂等的情况下是很危险的，所以设置为false
+  # 在编程中一个幂等操作的特点是其任意多次执行所产生的影响均与第一次执行的影响相同
+  # 当OkToRetryOnAllOperations设置为false时，只会对get请求进行重试
+  # 当OkToRetryOnAllOperations设置为true时，get，post，put，delete都生效。
+  # 一般设置为false
+  OkToRetryOnAllOperations: false
+
+  # 同一台实例最大重试次数,不包括首次调用，默认0
+  MaxAutoRetries: 0
+
+  # 重试负载均衡其他的实例最大次数,不包括首次调用，默认1
+  MaxAutoRetriesNextServer: 1
+
+#为了测试，这里自定义一个文件上传路径，供网关微服务获取
+
+# 应用服务 WEB 访问端口
+server:
+   port: 9000
+
+  #配置通用mapper
+mapper:
+   mappers: tk.mybatis.mapper.common.Mapper
+   before: true
+  #设置加密算法（MD5，SHA-1,SHA-256）
+Credential:
+    AlgorithmName: MD5
+  #设置加密次数
+    hashIterations: 1024
+  # 打印dao 层debug信息
+logging:
+   level:
+     com:
+     yida:
+     scdgateway:
+     dao: debug
+
+

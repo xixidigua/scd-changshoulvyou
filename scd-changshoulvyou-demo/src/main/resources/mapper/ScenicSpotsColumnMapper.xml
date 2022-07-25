@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.ScenicSpotsColumnMapper">
+    <!--增-->
+    <insert id="add">
+    insert into t_scenic_spots_column (title,scenic_id,play_Time,open_Time,traffic_Message,person_Price,children_Price,address,ticket_Show,map_Show_Name,longitude,latitude,intro,file_Sourse,file_Sourse_Phonto,Update_Time)
+    values
+    (#{title},#{scenic.id},#{playTime},#{openTime},#{trafficMessage},#{personPrice},#{childrenPrice},#{address},#{ticketShow},#{mapShowName},#{longitude},#{latitude},#{intro},#{fileSourse},#{fileSoursePhonto},#{updateTime})
+</insert>
+    <!--针对oracle增加，单独设计-->
+    <insert id="add" databaseId="oracle">
+    insert  into
+    t_scenic_spots_column(id,name,t_scenic_spots_column)
+     values
+    (t_scenic_spots_column_seq.nextval,#{name},#{updatetime})
+</insert>
+    <!--改-->
+    <update id="update">
+        update t_scenic_spots_column set title= #{title},scenic_id=#{scenic.id},play_Time=#{playTime},open_Time=#{openTime},traffic_Message=#{trafficMessage},person_Price=#{personPrice},children_Price=#{childrenPrice},address=#{address},ticket_Show=#{ticketShow},map_Show_Name=#{mapShowName},longitude=#{longitude},latitude=#{latitude},intro=#{intro},file_Sourse=#{fileSourse},file_Sourse_Phonto=#{fileSoursePhonto},Update_Time=#{updateTime}
+    where id=#{id}
+    </update>
+
+    <resultMap id="base_map" type="com.yida.scdchangshoulvyoudemo.entity.ScenicSpotsColumn">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="playTime" column="play_Time"></result>
+        <result property="openTime" column="open_Time"></result>
+        <result property="trafficMessage" column="traffic_Message"></result>
+        <result property="personPrice" column="person_Price"></result>
+        <result property="childrenPrice" column="children_Price"></result>
+        <result property="address" column="address"></result>
+        <result property="ticketShow" column="ticket_Show"></result>
+        <result property="mapShowName" column="map_Show_Name"></result>
+        <result property="longitude" column="longitude"></result>
+        <result property="latitude" column="latitude"></result>
+        <result property="intro" column="intro"></result>
+        <result property="fileSourse" column="file_Sourse"></result>
+        <result property="fileSoursePhonto" column="file_Sourse_Phonto"></result>
+        <result property="updatetime" column="Update_Time"></result>
+        <!--分布式查询-->
+        <association property="scenic" select="com.yida.scdchangshoulvyoudemo.mapper.ScenicMapper.read" column="scenic_id"/>
+    </resultMap>
+    <!--读取所有-->
+    <select id="readAll" resultMap="base_map">
+        select * from t_scenic_spots_column
+    </select>
+    <!--    读一个-->
+    <select id="readOne" resultMap="base_map">
+        select * from t_scenic_spots_column where id=#{id}
+    </select>
+<!--    &lt;!&ndash;按id查询&ndash;&gt;
+    <select id="readScenic" resultType="com.yida.changshoulvyoudemo.entity.ScenicSpotsColumn">
+        select *from t_scenic_spots_column
+        <where>
+            <if test="scenic_id!=null and scenic_id!=1">
+                scenic_id= #{scenic_id}
+            </if>
+        </where>
+    </select>-->
+    <!--根据景区标题  所属景区 更新时间查询-->
+   <select id="read" resultType="com.yida.scdchangshoulvyoudemo.entity.ScenicSpotsColumn">
+    select * from  t_scenic_spots_column,t_scenic
+     <where>
+         t_scenic_spots_column.scenic_id=t_scenic.id
+         <if test="title!=null and title!=''" >
+             and t_scenic_spots_column.title LIKE #{title}
+         </if>
+         <if test="scenic_id!=null and scenic_id!=1" >
+             and t_scenic.id= #{scenic_id}
+         </if>
+         <if test="startTime!=null and startTime!='' " >
+            and  t_scenic_spots_column.Update_Time >= #{startTime}
+         </if>
+         <if test="endTime!=null and endTime!='' " >
+             and  #{endTime} >=t_scenic_spots_column.Update_Time
+         </if>
+        <!-- <if test="endTime!=null and endTime!=''and startTime!=null and startTime!=''and starTime==endTime " >
+             and  #{endTime} = left (Update_Time,10)
+         </if>-->
+   </where>
+    </select>
+    <select id="readTime" resultType="com.yida.scdchangshoulvyoudemo.entity.ScenicSpotsColumn">
+        select * from  t_scenic_spots_column,t_scenic
+        <where>
+            t_scenic_spots_column.scenic_id=t_scenic.id
+            <if test="title!=null and title!=''" >
+                and t_scenic_spots_column.title LIKE #{title}
+            </if>
+            <if test="scenic_id!=null and scenic_id!=1" >
+                and t_scenic.id= #{scenic_id}
+            </if>
+            <if test="endTime!=null and endTime!='' " >
+                 and  #{endTime} = left (Update_Time,10)
+             </if>
+        </where>
+    </select>
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from t_scenic_spots_column where id = #{id}
+    </delete>
+    <!--开启自定义redis缓存-->
+    <cache type="com.yida.scdchangshoulvyoudemo.cache.RedisCache"/>
+</mapper>

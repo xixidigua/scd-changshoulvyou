@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <!--BT4的CSS-->
+    <link rel="styleSheet" href="bootstrap/css/bootstrap.css">
+    <!--导入自己的CSS库-->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <!--导入favicon图标-->
+    <link rel="icon" href="favicon.ico">
+
+</head>
+<body id="body">
+
+
+<!-----------------------顶部topbar的begin--------------------------->
+<!--调用公共代码片段header-->
+<div th:replace="~{base::header}"></div>
+<!-----------------------顶部topbar的end----------------------------->
+
+
+<!------------------------左侧界面的begin------------------------------>
+<section class="yida-left-side " style="background-color:rgba(37,28,51,0.07)">
+    <div class="container-fluid h-100">
+        <div class=" row h-100 align-items-start">
+            <div th:replace="~{base::leftMenuBar(cname)}"></div>
+            <!------------------------左侧界面的end------------------------------>
+            <!------------------------右侧界面的begin------------------------------>
+            <div id="yida-main" class="col-10 ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 mt-4 bg-light  font-weight-bold" style="height: 40px">
+                            <span class="user-06">消息列表</span>
+                            <div class="col-10 d-flex flex-column align-items-end">
+                                <a class="yida-submenu" style="text-decoration: none;display: block;border: 1px solid"
+                                   th:href="@{/fabuxiaoxi}">
+                                    <button type="button" class="user-07 btn btn-outline-success ">添加</button>
+                                </a>
+                                <button type="button" id="deleteAll" class="user-08 btn btn-outline-success "onclick="deleteAll()"><a
+                                        th:href="@{/deleteAllMessage}" onclick="return confirm('确定删除吗?');">删除</a></button>
+                                <button type="button" id="changAllMessage" onclick="changAllMessage()" class="user-08 btn btn-outline-danger "style="right: -80px!important;"><a
+                                        th:href="@{/setFocusAllMessage}"  onclick="return confirm('确定要修改吗?');" style="text-decoration: none">焦点/非焦点</a></button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 bg-white " style="">
+                            <form id="form" th:action="@{/searchMessageColumn}" method="post">
+                                <div class="input-group input-group-sm mt-3">
+                                    <span style="font-size: 16px">资讯标题：</span>
+                                    <input type="text" class="form-control" id="title" name="search"
+                                           th:value="${title}"    style="height: 30px">
+                                    <div class="ml-4">
+                                        <span style="font-size: 16px">发布时间：</span>
+                                    </div>
+                                    <input id="startTime" type="text" class="form-control Wdate mr-1" name="begin"
+                                           th:value="${startTime}"     onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,readOnly:true})"
+                                           style="width: 60px !important;height: 28px !important;">
+                                    <span style="font-size: 16px">到</span>
+                                    <input id="endTime" type="text" class="form-control Wdate ml-1 mr-3" name="end"
+                                           th:value="${endTime}"    onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,readOnly:true})"
+                                           style="width: 60px !important;height: 28px !important;">
+                                    <input type="hidden" name="strCur" id="hidden_cur">
+                                    <button type="submit" id="searchThem" class="btn bg-success text-white mr-5">搜索
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped " id="table" stripe>
+                    <tr class="table-info">
+                        <th>
+                            <div class="form-check">
+                                <input type="checkbox" id="checkbox" class="form-check-input">
+                            </div>
+                        </th>
+                        <th>序号</th>
+                        <th>标题</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                        <th style="width: 120px">焦点信息<br>(YES/NO)</th>
+                    </tr>
+
+                    <tr th:each="f,status:${focusMessageColumns}">
+                        <td>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input">
+                            </div>
+                        </td>
+                        <td th:text="${status.count}"></td>
+                        <td th:text="${f.title}"></td>
+                        <td th:text="${f.updateTime}"></td>
+                        <td>
+                            <button type="button" class="btn btn-outline-success"><a
+                                    style="text-decoration: none;color:black" th:href="@{/updateMessage(id=${f.id})}">修改</a>
+                            </button>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-outline-success"><a
+                                    style="text-decoration: none;color:black" th:href="@{/deleteMessage(id=${f.id})}"
+                                    onclick="return confirm('确定删除吗?');">删除</a></button>
+                        </td>
+                        <td>
+                            <a th:href="@{/setFocusMessage(id=${f.id})}" data-id="43" data-url="updateIsHotNews"  th:if="${f.logo==1}"  class="mr-1 p-0 nav-link d-inline bg-success btn btn-sm d-inline-block pl-2 pr-2 updateIsHotNews_a_id" style="width:50px;color: white;">YES</a>
+                            <a th:href="@{/setFocusMessage(id=${f.id})}" data-id="43" data-url="updateIsHotNews"  th:if="${f.logo==0}"  class="mr-1 p-0 nav-link d-inline bg-danger btn btn-sm d-inline-block pl-2 pr-2 updateIsHotNews_a_id" style="width:50px;color: white;">NO</a>
+
+                        </td>
+                    </tr>
+                </table>
+                <div class="card-footer bg-white pb-0">
+                    <div class="form-inline align-items-end justify-content-end mb-1">
+                        <ul class="pagination pagination-sm mb-0 mt-0">
+
+                            <li class="page-item">
+                                <a class="page-link go_page mr-1" href="javascript:void(0)" data-page="1">第一页</a>
+                            </li>
+                            <li class="page-item mr-1" th:each="num:${page.navigatepageNums}" >
+                                <a class="page-link go_page" href="javascript:void(0)" th:text="${num}" th:data-page="${num}"></a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link  mr-2 go_page ml-1" href="javascript:void(0)" th:data-page="${page.nextPage}"  > 下一页 </a>
+                            </li>
+
+                        </ul>
+                        <div id="pages" class="text-muted align-self-center mr-2" style="font-size: 13px;" th:text="${'当前第'+page.pageNum+'页/共'+page.pages+'页'}"></div>
+                        <span class="text-muted align-self-center mr-1" style="font-size: 13px;">到第</span>
+                        <input type="text" class="mr-2 text-center align-items-center" style="width: 40px" id="input_text">
+                        <span class="text-muted align-self-center mr-2" style="font-size: 13px;">页</span>
+                        <input type="hidden" value="2" id="total_page_hidden">
+                        <input type="button" value="跳 转" class="btn btn-sm bg-success text-white"  id="input_btn">
+                    </div>
+                </div>
+
+                <!------------------------右侧界面的end------------------------------>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{base::footer01}"></div>
+    <div th:replace="~{base::footer02}"></div>
+
+
+</section>
+
+
+<!--以下bootstrap4的依赖js库，引入顺序不要错了哟!-->
+<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script src="My97DatePicker/WdatePicker.js"></script>
+<!--引入自己写的js-->
+<script type="text/javascript" src="js/fabuxiaoxi.js"></script>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,252 @@
+/*                通用部分begin                     */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0
+}
+
+* {
+    font-size: 13px;
+    font-family: 微软雅黑 仿宋;
+}
+
+a {
+    text-decoration: none;
+    color: gray;
+}
+
+/*              通用部分end                     */
+
+/*                 顶部topbar的begin                            */
+.yida-topbar {
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+}
+
+.yida-topbar .yida-col1 img {
+    width: 90px !important;
+    height: 60px !important;
+}
+
+.yida-topbar .yida-col1 span {
+    font-size: 18px !important;
+}
+
+/*     顶部topbar的end                       */
+/*     左侧界面begin                     */
+.yida-left-side {
+    position: absolute;
+    top:50px;
+    left: 0;
+    right: 0;
+    min-height: 600px;
+    background-color: rgba(37,28,51,0.07);
+}
+
+
+.user-03{
+    border-bottom: 1px solid black;
+}
+.user-04 {
+    border-bottom: 1px solid rgba(37, 28, 51, 0.07);
+}
+ a:hover{
+     color: green;
+ }
+.yida-submenu{
+    color: #4e555b;
+}
+/*      左侧界面end                                */
+
+/*      右侧界面begin                                         */
+.yida-right-side {
+  min-height:600px;
+background-color: rgba(37,28,51,0.07);
+}
+.user-05{
+    margin-top:10px;
+    font-family: 方正姚体;
+    text-shadow: 5px -5px 5px black;
+
+}
+
+/*      右侧界面end                                         */
+.user-06{
+      position: absolute;
+      top: 5px;
+      font-size: 20px;
+      font-family: 方正姚体;
+  }
+.user-07{
+     position: absolute;
+     top: 10px;
+    right: 80px;
+    height: 25px!important;
+ }
+.user-08{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    height: 25px!important;
+}
+.user-09{
+    border:1px solid rgba(37,28,51,0.07);
+    outline-color: rgba(15,12,135,0.51);
+    border-radius: 3px;
+
+}
+/*盒子内边距设置*/
+.user-10{
+    box-sizing: border-box; padding: 15px; background: #fff;
+}
+
+.fileinput-button{
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+.fileinput-button input{
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      opacity: 0;
+  }
+
+#my_input{
+   border: 0;
+    background-color: white;
+    color: red;
+    outline: none!important;
+}
+/*超链接的内容是文本，对应的美化**/
+/*   #uploadfile_a{
+   display:inline-block;
+   width:80px;
+   height:30px;
+   color:white;
+   background-color:orange;
+   line-height:30px;
+   text-align: center;
+   border-radius: 6px;
+   position: relative;
+
+   }
+ #myfile{
+   position: absolute;
+   top: 0px;
+   left:0px;
+   width:100%;
+   height:100%;
+   opacity: 0.0; /*隐藏 0.0 隐藏 1.0 显现*/
+/* }*/
+/*超链接的内容是图片，对应的美化*/
+#uploadfile_a{
+    display:inline-block;
+    position: relative;
+}
+#myfile{
+    position: absolute;
+    top: 0px;
+    left:0px;
+    width:100%;
+    height:100%;
+    opacity: 0.0; /*隐藏 0.0 隐藏 1.0 显现*/
+}
+#litimg_del_btn{
+    position: absolute;
+    top: 40px;
+    left:0px;
+    width:100%;
+    height:20px;
+    opacity: 0.0; /*隐藏 0.0 隐藏 1.0 显现*/
+    background-color:#6c757d!important;
+}
+#user-12{
+    position:absolute;
+    top:10%;
+    margin-left:50%;
+  position: fixed;
+   display: none ;
+    padding: 10px;
+    border-radius: 20px!important;
+   font-size: 16px;
+
+}
+.texttarea{
+  border: solid 0px;
+    outline: none;
+    height: 320px;
+    resize: none;
+    width: 850px;
+ }
+a:hover.user-13{
+     text-decoration:none;
+     border: 1px solid blue;
+ }
+a:hover.user-14{
+      font-size: 9px;
+      text-decoration:none;
+      border: 1px solid blue;
+  }
+a:hover.user-15{
+    font-size: 10px;
+    text-decoration:none;
+    border: 1px solid blue;
+}
+a:hover.user-16{
+    font-size: 12px;
+    text-decoration:none;
+    border: 1px solid blue;
+}
+a:hover.user-17{
+    font-size: 14px;
+    text-decoration:none;
+    border: 1px solid blue;
+}
+a:hover.user-18{
+    font-size: 16px;
+    text-decoration:none;
+    border: 1px solid blue;
+}
+a:hover.user-19{
+    font-size: 18px;
+    text-decoration:none;
+    border: 1px solid blue;
+}
+a:hover.user-20{
+    font-size: 24px;
+    text-decoration:none;
+    border: 1px solid blue;
+}
+a:hover.user-21{
+    font-size: 32px;
+    text-decoration:none;
+    border: 1px solid blue;
+}
+#user-22{
+    position:absolute;
+    top:10%;
+    margin-left:50%;
+    position: fixed;
+    display: none;
+    border-radius: 20px!important;
+    font-size: 16px;
+
+}
+#my_input_del{
+    border: 0;
+    background-color: white;
+    color: black;
+    outline: none!important;
+}
+#div_editor {
+    margin: 0px auto;
+    text-align: left;
+    width: 700px;
+
+}

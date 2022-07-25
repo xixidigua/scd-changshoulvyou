@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdchangshoulvyoudemo.mapper.VersionManageMapper">
+
+    <!--改-->
+    <update id="update">
+        update t_version_manage set client_id=#{client.id},name=#{name},address=#{address},content=#{content}
+    where id=#{id}
+    </update>
+
+    <resultMap id="base_map" type="com.yida.scdchangshoulvyoudemo.entity.VersionManage">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="address" column="address"></result>
+        <result property="content" column="content"></result>
+        <!--分布式查询-->
+        <association property="client" select="com.yida.scdchangshoulvyoudemo.mapper.ClientMapper.read" column="client_id"/>
+    </resultMap>
+    <!--读取所有-->
+    <select id="readAll" resultMap="base_map">
+        select * from t_version_manage
+    </select>
+
+</mapper>

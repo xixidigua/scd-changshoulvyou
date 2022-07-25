@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yida.scdgateway.dao.UserDao">
+
+    <resultMap type="com.yida.scdgateway.entity.User" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="salt" column="salt" jdbcType="VARCHAR"/>
+        <collection property="roles" javaType="java.util.HashSet" ofType="com.yida.scdgateway.entity.Role">
+           <id property="id" column="rid"></id>
+            <result property="name" column="rname"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getUserByName" resultMap="UserMap">
+        select u.*,r.id rid,r.name rname from user u
+         inner  join  user_role ur On u.id=ur.user_id
+         inner  join role r on r.id=ur.role_id
+         where u.name=#{name}
+    </select>
+<insert id="insertUserRole">
+    insert  into user_role(user_id, role_id) values (#{userId},#{roleId})
+</insert>
+</mapper>
+
